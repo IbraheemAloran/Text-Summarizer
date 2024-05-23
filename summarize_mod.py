@@ -7,6 +7,7 @@ from nltk.stem.wordnet import WordNetLemmatizer
 from nltk import pos_tag, ne_chunk
 from nltk.probability import FreqDist
 from nltk.cluster.util import cosine_distance
+import math
 
 stop_words = set(stopwords.words("english"))
 
@@ -38,16 +39,16 @@ def summarize(text, percentage):
     preprocess_sents = []
     preprocess_words = []
     sents = sent_tokenize(text)
-    size = len(sents)*percentage
+    size = math.floor(len(sents)*percentage)
     for sent in sents:
         preprocess_sents.append(preprocess_text(sent))
 
     flat_preprocessed_words = [word for sentence in preprocess_sents for word in sentence]
     word_freq = FreqDist(flat_preprocessed_words)
-    print(word_freq)
+    #print(word_freq)
 
     sentence_scores = score_sentences(preprocess_sents, word_freq)
-    print(sentence_scores)
+    #print(sentence_scores)
 
     summary_sentences = []
     if sentence_scores:
@@ -60,4 +61,4 @@ def summarize(text, percentage):
     summary = ' '.join(summary_sentences)
     #print("\nSummary:")
     print(summary)
-    print(summary_sentences)
+    #print(summary_sentences)
